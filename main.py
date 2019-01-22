@@ -1,6 +1,5 @@
-
-def read(date, time):
-    fil = open('pickup_times.csv', 'r')
+def read(date, time, filename):
+    fil = open(filename, 'r')
     # Store id valuelist pairs in a two dimensional list.
     # So we have list of id's in index 0 and list of pickup time lists in index 1
     id_value_list = [[], []]
@@ -45,7 +44,7 @@ def count_medians(id_value_list):
             median = (id_value_list[1][i][int (length/2)] + id_value_list[1][i][int ((length/2) -1)]) / 2
         #Store the id-median pairs as tuples to a list
         #That means a change in indexing
-        #For example id of n:th pair can be found from medians[n][0] and median from medians[n][1]
+        #For example id of n:th pair can now be found from medians[n][0] and median from medians[n][1]
         medians.append( (id_value_list[0][i], median) )
     return medians
 
@@ -78,15 +77,16 @@ def main():
     #A loop for the script to not crash on invalid input or restricted file
     while (status == True):
         try:
+            filename1 = str (input ("Please enter the name of the file containing the pickup time data\n"))
             date = str (input ("Please enter the date in format yyyy-mm-dd\n"))
             hour = str (input ("Please enter start and end hours for example 00-24\n") )
-            filename = str (input ("Please enter the name of the file where you want to store the data\n"))
+            filename2 = str (input ("Please enter the name of the file where you want to store the data\n"))
             hours = hour.split("-")
-            id_value_list = read(date, hours)
+            id_value_list = read(date, hours, filename1)
             medians = count_medians(id_value_list)
             sort_by_id(medians, len(medians) - 1)
-            write(medians, date, hour, filename)
-            print ("Medians were saved in file '{}'". format(filename))
+            write(medians, date, hour, filename2)
+            print ("Medians were saved in file '{}'". format(filename2))
             status = False
         except:
             print ("Something went wrong. Please check your input and try again.\n")
